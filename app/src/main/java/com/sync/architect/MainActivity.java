@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -65,14 +65,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //UI button testing
-//        ImageButton ib = findViewById(R.id.settings_button);
-//        ib.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this,"Settings Pressed",Toast.LENGTH_LONG).show();
-//            }
-//        });
+        //Settings Button Press
+        ImageButton settingsButton = findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopupMenu settingsMenu = new PopupMenu(MainActivity.this, v, 0);
+                settingsMenu.inflate(R.menu.menu_settings);
+                settingsMenu.show();
+                //Hide the UI after menu has been dismissed
+                settingsMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+                        hideSystemUI();
+                    }
+                });
+
+            }
+        });
 
 
     }
