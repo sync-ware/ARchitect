@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ARchitect</string>
+    <string name="title_activity_contacts">ContactsActivity</string>
 </resources>
