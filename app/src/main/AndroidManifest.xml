@@ -23,7 +23,6 @@
         <activity android:name=".ContactsActivity"
         android:screenOrientation="unspecified"
         android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize">
-
     </activity>
     </application>
 
