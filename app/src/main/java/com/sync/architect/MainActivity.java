@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
+        hideSystemUI();
         if (glView != null) { glView.onResume(); }
     }
 
