@@ -27,4 +27,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="Cloud Plans" />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="@string/register" />
 </android.widget.LinearLayout>

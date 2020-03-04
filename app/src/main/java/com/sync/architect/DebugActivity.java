@@ -43,6 +43,14 @@ public class DebugActivity extends AppCompatActivity {
             }
         });
 
+        Button registerButton = findViewById(R.id.button_register);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DebugActivity.this, Registration.class));
+            }
+        });
+
     }
 
 }

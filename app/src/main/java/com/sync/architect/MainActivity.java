@@ -45,18 +45,23 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //Force into landscape
 
 
-        if (!Engine.initialize(this, key)) {
-            Log.e("HelloAR", "Initialization Failed.");
-            Toast.makeText(MainActivity.this, Engine.errorMessage(), Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (!CameraDevice.isAvailable()) {
-            Toast.makeText(MainActivity.this, "CameraDevice not available.", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (!ImageTracker.isAvailable()) {
-            Toast.makeText(MainActivity.this, "ImageTracker not available.", Toast.LENGTH_LONG).show();
-            return;
+        try {
+            if (!Engine.initialize(this, key)) {
+                Log.e("HelloAR", "Initialization Failed.");
+                Toast.makeText(MainActivity.this, Engine.errorMessage(), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (!CameraDevice.isAvailable()) {
+                Toast.makeText(MainActivity.this, "CameraDevice not available.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (!ImageTracker.isAvailable()) {
+                Toast.makeText(MainActivity.this, "ImageTracker not available.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+        } catch (UnsatisfiedLinkError e){
+            startActivity(new Intent(MainActivity.this, DebugActivity.class));
         }
 
         glView = new GLView(this);
