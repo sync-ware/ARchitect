@@ -9,8 +9,14 @@ import android.database.sqlite.SQLiteStatement;
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static String name = "database";
-    private static int version = 1;
+    private static final String databaseName = "ARchitectDB";
+    public static final String tableName = "Accounts";
+    public static final String col2 = "username";
+    public static final String col3 = "first_name";
+    public static final String col4 = "last_name";
+    public static final String col5 = "email";
+    public static final String col6 = "password";
+    public static int version = 1;
 
     private String createAccountsTable = "CREATE TABLE if not exists \"Accounts\" (\n" +
             "\t\"user_id\"\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
@@ -22,37 +28,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ")";
 
     public DatabaseHelper(@Nullable Context context) {
-        super(context, name, null, version);
+        super(context, databaseName, null, version);
         getWritableDatabase().execSQL(createAccountsTable);
     }
 
     public void createAccount(ContentValues values) {
-        getWritableDatabase().insert("Accounts", "", values);
+        getWritableDatabase().insert(tableName, "", values);
     }
 
-    public Boolean isLoginValid(String username, String password) {
-        String query = "SELECT count(*) FROM Accounts WHERE username = '" + username + "' AND password = '"
-                + password + "'";
-        SQLiteStatement statement = getReadableDatabase().compileStatement(query);
-        long l = statement.simpleQueryForLong();
-        statement.close();
+//    public Boolean isLoginValid(String username, String password) {
+//        String query = "SELECT count(*) FROM Accounts WHERE username = '" + username + "' AND password = '"
+//                + password + "'";
+//        SQLiteStatement statement = getReadableDatabase().compileStatement(query);
+//        long l = statement.simpleQueryForLong();
+//        statement.close();
+//
+//        return (l == 1);
+//    }
 
-        if (l == 1) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(createAccountsTable);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
     }
 }
