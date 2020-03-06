@@ -177,7 +177,13 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
         hideSystemUI();
-        if (glView != null) { glView.onResume(); }
+        try {
+            if (glView != null) {
+                glView.onResume();
+            }
+        } catch(UnsatisfiedLinkError e) {
+            startActivity(new Intent(MainActivity.this, DebugActivity.class));
+    }
     }
 
     @Override
