@@ -16,6 +16,7 @@
             android:name=".DebugActivity"
             android:label="@string/title_activity_debug"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".Registration" />
         <activity android:name=".LocalPlansActivity" />
         <activity android:name=".ContactsActivity" />
