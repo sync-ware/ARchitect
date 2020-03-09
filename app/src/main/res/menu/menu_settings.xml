@@ -7,4 +7,7 @@
     <item
         android:id="@+id/item_debug"
         android:title="Debug" />
+    <item
+        android:id="@+id/item_logoff"
+        android:title="Log off" />
 </menu>
