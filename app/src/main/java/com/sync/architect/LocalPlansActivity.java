@@ -1,6 +1,8 @@
 package com.sync.architect;
 
 import android.content.DialogInterface;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,8 +14,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,29 +32,29 @@ public class LocalPlansActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_plans);
 
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
         flrplnList = new ArrayList<>();
-        flrplnList.add(new Floorplan("floorplan 1"));
-        flrplnList.add(new Floorplan("floorplan 2"));
-        flrplnList.add(new Floorplan("floorplan 3"));
-        flrplnList.add(new Floorplan("floorplan 4"));
-        flrplnList.add(new Floorplan("floorplan 5"));
-        flrplnList.add(new Floorplan("floorplan 6"));
-        flrplnList.add(new Floorplan("floorplan 7"));
-        flrplnList.add(new Floorplan("floorplan 8"));
-        flrplnList.add(new Floorplan("floorplan 9"));
-        flrplnList.add(new Floorplan("floorplan 10"));
+        //flrplnList.add(new Floorplan("floorplan 1"));
 
-        RecyclerView myRecView = (RecyclerView) findViewById(R.id.recyclerview_id);
-        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(this,flrplnList);
+        try {
+            for (String planName : getAssets().list("")) {
+                if (!(planName.equals("images") || planName.equals("webkit"))) {
+                    InputStream ims = getAssets().open(planName);
+                    Drawable drawable = Drawable.createFromStream(ims, null);
+                    Floorplan plan = new Floorplan(planName, drawable);
+                    ims.close();
+                    flrplnList.add(plan);
+
+                }
+
+            }
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), "Couldn't generate plan", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+        RecyclerView myRecView = findViewById(R.id.recyclerview_id);
+        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(this, flrplnList);
         myRecView.setLayoutManager(new GridLayoutManager(this,2));
         myRecView.setAdapter(myAdapter);
 

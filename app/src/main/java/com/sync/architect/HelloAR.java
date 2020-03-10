@@ -9,10 +9,15 @@ package com.sync.architect;
 //================================================================================================================================
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+
+import android.graphics.drawable.Drawable;
 import android.opengl.GLES20;
 import android.util.Log;
+import android.widget.Toast;
 
 import cn.easyar.Buffer;
 import cn.easyar.CameraDevicePreference;
@@ -114,14 +119,11 @@ public class HelloAR
         outputFrameFork = OutputFrameFork.create(2);
 
         boolean status = true;
-        status &= camera.openWithPreferredType(CameraDeviceType.Back);;
+        status &= camera.openWithPreferredType(CameraDeviceType.Back);
         camera.setSize(new Vec2I(1280, 960));
         camera.setFocusMode(CameraDeviceFocusMode.Continousauto);
         if (!status) { return; }
         ImageTracker tracker = ImageTracker.create();
-
-        //This is where we load in images to be tracked
-//
         loadFromImage(tracker, "FloorPlan1.jpg", "FloorPlan1");
         trackers.add(tracker);
 

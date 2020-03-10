@@ -176,16 +176,16 @@ public class BoxRenderer
         vbo_color_box = generateOneBuffer();
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_color_box);
         int cube_vertex_colors[][] = {
-                {255, 0, 0, 128}, {0, 255, 0, 128}, {0, 0, 255, 128}, {0, 0, 0, 128},
-                {0, 255, 255, 128}, {255, 0, 255, 128}, {255, 255, 0, 128}, {255, 255, 255, 128}};
+                {128, 128, 128, 128}, {128, 128, 128, 128}, {128, 128, 128, 128}, {128, 128, 128, 128},
+                {128, 128, 128, 128}, {128, 128, 128, 128}, {128, 128, 128, 128}, {128, 128, 128, 128}};
         ByteBuffer cube_vertex_colors_buffer = ByteBuffer.wrap(byteArrayFromIntArray(flatten(cube_vertex_colors)));
         GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, cube_vertex_colors_buffer.limit(), cube_vertex_colors_buffer, GLES20.GL_STATIC_DRAW);
 
         vbo_color_box_2 = generateOneBuffer();
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo_color_box_2);
         int cube_vertex_colors_2[][] = {
-                {255, 0, 0, 255}, {255, 255, 0, 255}, {0, 255, 0, 255}, {255, 0, 255, 255},
-                {255, 0, 255, 255}, {255, 255, 255, 255}, {0, 255, 255, 255}, {255, 0, 255, 255}};
+                {128, 128, 128, 255}, {128, 128, 128, 255}, {128, 128, 128, 255}, {128, 128, 128, 255},
+                {128, 128, 128, 255}, {128, 128, 128, 255}, {128, 128, 128, 255}, {128, 128, 128, 255}};
         ByteBuffer cube_vertex_colors_2_buffer = ByteBuffer.wrap(byteArrayFromIntArray(flatten(cube_vertex_colors_2)));
         GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, cube_vertex_colors_2_buffer.limit(), cube_vertex_colors_2_buffer, GLES20.GL_STATIC_DRAW);
 

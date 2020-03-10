@@ -44,6 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.floorplan_name.setText(mData.get(position).getName());
+        holder.floorplan_image.setImageDrawable(mData.get(position).getImage());
 
     }
 
@@ -56,11 +57,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView floorplan_name;
         ImageView floorplan_button;
+        ImageView floorplan_image;
 
         public MyViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             floorplan_name = itemView.findViewById(R.id.floorplan_name_id);
             floorplan_button = itemView.findViewById(R.id.floorplan_button_id);
+            floorplan_image = itemView.findViewById(R.id.floorplan_image_id);
 
             floorplan_button.setOnClickListener(new View.OnClickListener() {
                 @Override
