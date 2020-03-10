@@ -121,12 +121,8 @@ public class HelloAR
         ImageTracker tracker = ImageTracker.create();
 
         //This is where we load in images to be tracked
-//        loadFromImage(tracker, "sightplus/argame00.jpg", "argame00");
-//        loadFromImage(tracker, "sightplus/argame01.png", "argame01");
-//        loadFromImage(tracker, "sightplus/argame02.jpg", "argame02");
-//        loadFromImage(tracker, "sightplus/argame03.jpg", "argame03");
-//        loadFromImage(tracker, "idback.jpg", "idback");
-//        loadFromImage(tracker, "namecard.jpg", "namecard");
+//
+        loadFromImage(tracker, "FloorPlan1.jpg", "FloorPlan1");
         trackers.add(tracker);
 
         feedbackFrameFork = FeedbackFrameFork.create(trackers.size());
