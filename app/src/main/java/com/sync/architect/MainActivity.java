@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.item_debug:
                                 startActivity(new Intent(MainActivity.this, DebugActivity.class));
                                 return true;
+                            case R.id.item_logoff:
+                                return true;
                             default:
                                 return MainActivity.super.onOptionsItemSelected(item);
                         }
