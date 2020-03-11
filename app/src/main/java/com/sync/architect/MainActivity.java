@@ -189,8 +189,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause()
     {
-        if (glView != null) { glView.onPause(); }
-        super.onPause();
+        try {
+            if (glView != null) {
+                glView.onPause();
+            }
+            super.onPause();
+        }catch(UnsatisfiedLinkError e){
+            super.onPause();
+        }
+
     }
 
 
