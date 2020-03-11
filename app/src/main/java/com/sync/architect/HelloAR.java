@@ -11,6 +11,7 @@ package com.sync.architect;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -63,11 +64,13 @@ public class HelloAR
     private OutputFrameFork outputFrameFork;
     private int previousInputFrameIndex = -1;
     private byte[] imageBytes = null;
+    private String[] floorPlans;
 
-    public HelloAR()
+    public HelloAR(String[] floorPlans)
     {
         scheduler = new DelayedCallbackScheduler();
         trackers = new ArrayList<ImageTracker>();
+        this.floorPlans = floorPlans;
     }
 
     private void loadFromImage(ImageTracker tracker, String path, String name)
@@ -114,19 +117,16 @@ public class HelloAR
         outputFrameFork = OutputFrameFork.create(2);
 
         boolean status = true;
-        status &= camera.openWithPreferredType(CameraDeviceType.Back);;
+        status &= camera.openWithPreferredType(CameraDeviceType.Back);
         camera.setSize(new Vec2I(1280, 960));
         camera.setFocusMode(CameraDeviceFocusMode.Continousauto);
         if (!status) { return; }
+
         ImageTracker tracker = ImageTracker.create();
 
-        //This is where we load in images to be tracked
-//        loadFromImage(tracker, "sightplus/argame00.jpg", "argame00");
-//        loadFromImage(tracker, "sightplus/argame01.png", "argame01");
-//        loadFromImage(tracker, "sightplus/argame02.jpg", "argame02");
-//        loadFromImage(tracker, "sightplus/argame03.jpg", "argame03");
-//        loadFromImage(tracker, "idback.jpg", "idback");
-//        loadFromImage(tracker, "namecard.jpg", "namecard");
+        for (String floorPlan : floorPlans) {
+            loadFromImage(tracker, "plans/" + floorPlan, floorPlan);
+        }
         trackers.add(tracker);
 
         feedbackFrameFork = FeedbackFrameFork.create(trackers.size());

@@ -23,6 +23,10 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import cn.easyar.Engine;
 
@@ -37,6 +41,8 @@ public class GLView extends GLSurfaceView
 
     private HelloAR helloAR;
 
+    private String[] floorPlanTargets;
+
     public GLView(Context context)
     {
         super(context);
@@ -45,12 +51,19 @@ public class GLView extends GLSurfaceView
         setEGLWindowSurfaceFactory(new WindowSurfaceFactory());
         setEGLConfigChooser(new ConfigChooser());
 
+
+        try {
+            floorPlanTargets = context.getAssets().list("plans");
+        } catch (IOException e) {
+            Toast.makeText(context, "Couldn't get files",Toast.LENGTH_SHORT).show();
+        }
+
         this.setRenderer(new GLSurfaceView.Renderer() {
             @Override
             public void onSurfaceCreated(GL10 gl, EGLConfig config) {
                 if (!initialized) {
                     initialized = true;
-                    helloAR = new HelloAR();
+                    helloAR = new HelloAR(floorPlanTargets);
                     helloAR.initialize();
                 } else {
                     helloAR.recreate_context();

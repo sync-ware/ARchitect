@@ -29,7 +29,28 @@ import cn.easyar.ImageTracker;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String key = "LtfvjirE95IyoiuHcBg1JC0aCGguu8D7usDH9R7l2aUq9d+4HvjI9VG0z7YK/tW7BuX8sAb31btF9dO6SbqeugrlyLIZ3dmuIvKe7Vq6nrsC9dm5GPPP9VHNx/UJ49KzB/P1sxi0how2up6hCuTVtgXiz/VRzZ60BPvRogX/yK5Jy5D1G/rdow35zroYtIaMSeHVuQ/5y6RJup66CvWeike00bgP49CyGLSGjEnl2bkY85KeBvfbsj/k3bQA/9KwSbqepA74z7JF1dC4HvLusgj527kC4tW4BbSQ9Rjz0qQOuO6yCPnOswL42/VHtM+yBeXZ+ST01rII4uilCvXXvgXxnvtJ5dm5GPOShB7k2rYI8+ilCvXXvgXxnvtJ5dm5GPOShBv3zqQOxcy2H//duyb3zPVHtM+yBeXZ+Sb5yL4E+OilCvXXvgXxnvtJ5dm5GPOSkw74z7I45t2jAvfQmgrmnvtJ5dm5GPOSlCrS6KUK9de+BfGeike02a8b/86yP//Rsjji3bobtIa5HvrQ+0n/z5sE9d27Sazatgfl2apH7Z61HvjYuw7f2KRJrOf1CPnR+Rjv0rRF9860A//IsgjinopHtMq2Gf/duR/lnu0wtN+4BvvJuQLixfU2up6nB/fIsQTk0aRJrOf1CvjYpQT/2PU2up66BPLJuw7lnu0wtM+yBeXZ+SL73bAOws62CP3VuQy0kPUY89KkDrj/uwTj2IUO9dOwBf/IvgT4nvtJ5dm5GPOShQ7106UP/9KwSbqepA74z7JF2d69DvXIgxn337wC+Nv1R7TPsgXl2fk4486xCvXZgxn337wC+Nv1R7TPsgXl2fk45t2lGPPvpwri1bYH292nSbqepA74z7JF29OjAvnSgxn337wC+Nv1R7TPsgXl2fkv89KkDsXMth//3bsm98z1R7TPsgXl2fko1/iDGfffvAL42/U2up6yE+bVpQ7C1boOxci2Buae7QXj0LtHtNWkJ/nftge0hrEK+s+yFrrH9Qnj0rMH8/WzGLSGjEm04ftJ4N2lAvfSoxi0hoxJ9dO6BuPSvh/vnopHtMy7CuLauBn7z/VRzZ6+BOWeike00bgP49CyGLSGjEnl2bkY85KeBvfbsj/k3bQA/9KwSbqepA74z7JF1dC4HvLusgj527kC4tW4BbSQ9Rjz0qQOuO6yCPnOswL42/VHtM+yBeXZ+ST01rII4uilCvXXvgXxnvtJ5dm5GPOShB7k2rYI8+ilCvXXvgXxnvtJ5dm5GPOShBv3zqQOxcy2H//duyb3zPVHtM+yBeXZ+Sb5yL4E+OilCvXXvgXxnvtJ5dm5GPOSkw74z7I45t2jAvfQmgrmnvtJ5dm5GPOSlCrS6KUK9de+BfGeike02a8b/86yP//Rsjji3bobtIa5HvrQ+0n/z5sE9d27Sazatgfl2ao26/Ntkyi7h+vcfO/dwO9HShiJLyEyxe8jwcrGPQ+12yODJ7LMKcPy7020hxL1jFvZpckPqYboS6dkpaQvE8NiOWZPtF/9wOPvrY1z9xGghUkmqle2eH0KYwuwUvtXt2Gu5Ux5N1g0L3Yw04at9e2s9WiwfdwnFPc1WbtbtTFMWDftD1sIqcEu6ofFYY/axbvSZBuYcBllOqgaMWDotgpA8cJZVnZ/hOaQCxxCb6mwTCa3Xx+L4ImLQqzldFXEWu1JjVLHCu5Dk3g1JYO6kq7OaaOEq4oe1TSPuUzWrHUYSeUl2SaF9+hkdPark8eEGrhC0xCTuoMSI1Qcm5nsBGuWvNc=";
+    private static String key = "LtfvjirE95IyoiuHcBg1JC0aCGguu8D7usDH9R7l2aUq9d+4HvjI9VG0z7YK/tW7BuX" +
+            "8sAb31btF9dO6SbqeugrlyLIZ3dmuIvKe7Vq6nrsC9dm5GPPP9VHNx/UJ49KzB/P1sxi0how2up6hCuTVtgXiz/" +
+            "VRzZ60BPvRogX/yK5Jy5D1G/rdow35zroYtIaMSeHVuQ/5y6RJup66CvWeike00bgP49CyGLSGjEnl2bkY85KeB" +
+            "vfbsj/k3bQA/9KwSbqepA74z7JF1dC4HvLusgj527kC4tW4BbSQ9Rjz0qQOuO6yCPnOswL42/VHtM+yBeXZ+ST0" +
+            "1rII4uilCvXXvgXxnvtJ5dm5GPOShB7k2rYI8+ilCvXXvgXxnvtJ5dm5GPOShBv3zqQOxcy2H//duyb3zPVHtM+" +
+            "yBeXZ+Sb5yL4E+OilCvXXvgXxnvtJ5dm5GPOSkw74z7I45t2jAvfQmgrmnvtJ5dm5GPOSlCrS6KUK9de+BfGeik" +
+            "e02a8b/86yP//Rsjji3bobtIa5HvrQ+0n/z5sE9d27Sazatgfl2apH7Z61HvjYuw7f2KRJrOf1CPnR+Rjv0rRF9" +
+            "860A//IsgjinopHtMq2Gf/duR/lnu0wtN+4BvvJuQLixfU2up6nB/fIsQTk0aRJrOf1CvjYpQT/2PU2up66BPLJ" +
+            "uw7lnu0wtM+yBeXZ+SL73bAOws62CP3VuQy0kPUY89KkDrj/uwTj2IUO9dOwBf/IvgT4nvtJ5dm5GPOShQ7106U" +
+            "P/9KwSbqepA74z7JF2d69DvXIgxn337wC+Nv1R7TPsgXl2fk4486xCvXZgxn337wC+Nv1R7TPsgXl2fk45t2lGP" +
+            "Pvpwri1bYH292nSbqepA74z7JF29OjAvnSgxn337wC+Nv1R7TPsgXl2fkv89KkDsXMth//3bsm98z1R7TPsgXl2" +
+            "fko1/iDGfffvAL42/U2up6yE+bVpQ7C1boOxci2Buae7QXj0LtHtNWkJ/nftge0hrEK+s+yFrrH9Qnj0rMH8/Wz" +
+            "GLSGjEm04ftJ4N2lAvfSoxi0hoxJ9dO6BuPSvh/vnopHtMy7CuLauBn7z/VRzZ6+BOWeike00bgP49CyGLSGjEn" +
+            "l2bkY85KeBvfbsj/k3bQA/9KwSbqepA74z7JF1dC4HvLusgj527kC4tW4BbSQ9Rjz0qQOuO6yCPnOswL42/VHtM" +
+            "+yBeXZ+ST01rII4uilCvXXvgXxnvtJ5dm5GPOShB7k2rYI8+ilCvXXvgXxnvtJ5dm5GPOShBv3zqQOxcy2H//du" +
+            "yb3zPVHtM+yBeXZ+Sb5yL4E+OilCvXXvgXxnvtJ5dm5GPOSkw74z7I45t2jAvfQmgrmnvtJ5dm5GPOSlCrS6KUK" +
+            "9de+BfGeike02a8b/86yP//Rsjji3bobtIa5HvrQ+0n/z5sE9d27Sazatgfl2ao26/Ntkyi7h+vcfO/dwO9HShi" +
+            "JLyEyxe8jwcrGPQ+12yODJ7LMKcPy7020hxL1jFvZpckPqYboS6dkpaQvE8NiOWZPtF/9wOPvrY1z9xGghUkmql" +
+            "e2eH0KYwuwUvtXt2Gu5Ux5N1g0L3Yw04at9e2s9WiwfdwnFPc1WbtbtTFMWDftD1sIqcEu6ofFYY/axbvSZBuYc" +
+            "BllOqgaMWDotgpA8cJZVnZ/hOaQCxxCb6mwTCa3Xx+L4ImLQqzldFXEWu1JjVLHCu5Dk3g1JYO6kq7OaaOEq4oe" +
+            "1TSPuUzWrHUYSeUl2SaF9+hkdPark8eEGrhC0xCTuoMSI1Qcm5nsBGuWvNc=";
+
     private GLView glView;
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -94,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
                             case R.id.item_debug:
                                 startActivity(new Intent(MainActivity.this, DebugActivity.class));
+                                return true;
+                            case R.id.item_logoff:
                                 return true;
                             default:
                                 return MainActivity.super.onOptionsItemSelected(item);
