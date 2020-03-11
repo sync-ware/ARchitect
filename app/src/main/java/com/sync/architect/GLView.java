@@ -42,6 +42,7 @@ public class GLView extends GLSurfaceView
     private HelloAR helloAR;
 
     private String[] floorPlanTargets;
+
     public GLView(Context context)
     {
         super(context);
