@@ -9,15 +9,11 @@ package com.sync.architect;
 //================================================================================================================================
 
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-import android.graphics.drawable.Drawable;
 import android.opengl.GLES20;
 import android.util.Log;
-import android.widget.Toast;
 
 import cn.easyar.Buffer;
 import cn.easyar.CameraDevicePreference;
@@ -68,11 +64,13 @@ public class HelloAR
     private OutputFrameFork outputFrameFork;
     private int previousInputFrameIndex = -1;
     private byte[] imageBytes = null;
+    private String[] floorPlans;
 
-    public HelloAR()
+    public HelloAR(String[] floorPlans)
     {
         scheduler = new DelayedCallbackScheduler();
         trackers = new ArrayList<ImageTracker>();
+        this.floorPlans = floorPlans;
     }
 
     private void loadFromImage(ImageTracker tracker, String path, String name)
@@ -123,8 +121,12 @@ public class HelloAR
         camera.setSize(new Vec2I(1280, 960));
         camera.setFocusMode(CameraDeviceFocusMode.Continousauto);
         if (!status) { return; }
+
         ImageTracker tracker = ImageTracker.create();
-        loadFromImage(tracker, "FloorPlan1.jpg", "FloorPlan1");
+
+        for (String floorPlan : floorPlans) {
+            loadFromImage(tracker, "plans/" + floorPlan, floorPlan);
+        }
         trackers.add(tracker);
 
         feedbackFrameFork = FeedbackFrameFork.create(trackers.size());

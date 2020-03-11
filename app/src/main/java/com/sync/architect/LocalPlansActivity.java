@@ -35,16 +35,17 @@ public class LocalPlansActivity extends AppCompatActivity {
         flrplnList = new ArrayList<>();
         //flrplnList.add(new Floorplan("floorplan 1"));
 
-        try {
-            for (String planName : getAssets().list("")) {
-                if (!(planName.equals("images") || planName.equals("webkit"))) {
-                    InputStream ims = getAssets().open(planName);
-                    Drawable drawable = Drawable.createFromStream(ims, null);
-                    Floorplan plan = new Floorplan(planName, drawable);
-                    ims.close();
-                    flrplnList.add(plan);
 
-                }
+        try {
+            String[] fileNames = getAssets().list("plans");
+            for (String planName : fileNames) {
+
+                InputStream ims = getAssets().open("plans/" + planName);
+                Drawable drawable = Drawable.createFromStream(ims, null);
+                Floorplan plan = new Floorplan(planName, drawable);
+                ims.close();
+                flrplnList.add(plan);
+
 
             }
         } catch (IOException e) {
