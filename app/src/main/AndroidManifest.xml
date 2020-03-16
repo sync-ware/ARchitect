@@ -19,6 +19,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".Registration" />
         <activity android:name=".LocalPlansActivity" />
+        <activity android:name=".CloudPlansActivity" />
         <activity android:name=".ContactsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

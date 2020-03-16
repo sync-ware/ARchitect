@@ -39,7 +39,7 @@ public class DebugActivity extends AppCompatActivity {
         cloudPlans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Start activity to cloud plans page
+                startActivity(new Intent(DebugActivity.this, CloudPlansActivity.class));
             }
         });
 
