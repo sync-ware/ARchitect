@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Registration"
+    android:layout_marginTop="10dp"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    tools:context=".Registration">
 
     <EditText
         android:id="@+id/rUsername_login"
         android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="200dp"
         android:hint="Username"
         android:inputType="textShortMessage"
         android:visibility="visible" />
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        app:srcCompat="@drawable/google"/>
+        app:srcCompat="@drawable/google" />
 
     <Button
         android:id="@+id/rButton_signup"

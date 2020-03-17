@@ -21,7 +21,13 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import cn.easyar.CameraDevice;
@@ -54,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
     private GLView glView;
 
-    private DatabaseHelper mDBHelper;
-    private SQLiteDatabase mDb;
-    private SQLiteDatabase testDB;
+
+    private static final String USER_FILE = "user.txt";
+    private String currentUser;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -101,22 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Initialise Database
-        mDBHelper = new DatabaseHelper(this);
 
-        try {
-            mDBHelper.updateDataBase();
-        } catch (IOException mIOException) {
-            throw new Error("UnableToUpdateDatabase");
-        }
-
-        try {
-            mDb = mDBHelper.getWritableDatabase();
-            testDB = mDBHelper.getWritableDatabase();
-
-        } catch (SQLException mSQLException) {
-            throw mSQLException;
-        }
 
         //Settings Button Press
         ImageButton settingsButton = findViewById(R.id.settings_button);
@@ -139,6 +130,12 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(new Intent(MainActivity.this, DebugActivity.class));
                                 return true;
                             case R.id.item_logoff:
+                                File file = new File(MainActivity.this.getFilesDir(), USER_FILE);
+                                if (file.exists()){
+                                    file.delete();
+                                }
+                                assignUser();
+                                Toast.makeText(MainActivity.this, "Signed Out",Toast.LENGTH_LONG).show();
                                 return true;
                             default:
                                 return MainActivity.super.onOptionsItemSelected(item);
@@ -162,15 +159,61 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        assignUser();
+
         ImageButton accountsButton = findViewById(R.id.account_button);
         accountsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, Registration.class));
+                if (currentUser == null) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, ContactsActivity.class));
+                }
             }
         });
 
 
+    }
+
+    public String loadUser() {
+        FileInputStream fis = null;
+        String text;
+        StringBuilder sb = new StringBuilder();
+        try {
+            fis = openFileInput(USER_FILE);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+
+
+            text = br.readLine();
+            sb.append(text);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public void assignUser() {
+        File userFile = new File(this.getFilesDir(), USER_FILE);
+        if (!userFile.exists()) {
+            currentUser = null;
+        } else {
+            String output = loadUser();
+            currentUser = output;
+
+        }
     }
 
     private interface PermissionCallback
@@ -222,13 +265,14 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
         hideSystemUI();
+        assignUser();
         try {
             if (glView != null) {
                 glView.onResume();
             }
         } catch(UnsatisfiedLinkError e) {
             startActivity(new Intent(MainActivity.this, DebugActivity.class));
-    }
+        }
     }
 
     @Override

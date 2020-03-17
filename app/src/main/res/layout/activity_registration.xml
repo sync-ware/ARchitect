@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".Registration">
@@ -12,7 +13,7 @@
         android:id="@+id/rUsername"
         android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="0dp"
         android:hint="@string/username" />
 
     <EditText
@@ -34,21 +35,24 @@
         android:layout_width="350dp"
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:hint="@string/email" />
+        android:hint="@string/email"
+        android:inputType="textWebEmailAddress" />
 
     <EditText
         android:id="@+id/rPassword"
         android:layout_width="350dp"
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:hint="@string/password" />
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/rConfirmPassword"
         android:layout_width="350dp"
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:hint="@string/confirm_password" />
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/register"
@@ -56,4 +60,5 @@
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
         android:text="@string/register" />
+
 </LinearLayout>

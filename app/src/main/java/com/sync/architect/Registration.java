@@ -3,6 +3,7 @@ package com.sync.architect;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,15 +12,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Registration extends AppCompatActivity {
     EditText rUsername, rFirstName, rLastName, rEmail, rPassword, rConfirmPassword;
-    Button register;
+    Button register, logInButton;
 
 
     DatabaseHelper mDBHelper;
     SQLiteDatabase mDb;
+
+    private static final String USER_FILE = "user.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,11 @@ public class Registration extends AppCompatActivity {
                     values.put("password", passwordValue);
                     mDb.insert("Accounts","",values);
                     Toast.makeText(getApplicationContext(), "Registered Successfully :)", Toast.LENGTH_LONG).show();
+                    mDb.close();
+                    saveUser();
+                    startActivity(new Intent(Registration.this, MainActivity.class));
+                    finish();
+
                 }
 
                 else {
@@ -75,16 +86,31 @@ public class Registration extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
-//    public void insertData(String username, String firstName, String lastName, String email, String password) {
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(db.col2, username);
-//        contentValues.put(db.col3, firstName);
-//        contentValues.put(db.col4, lastName);
-//        contentValues.put(db.col5, email);
-//        contentValues.put(db.col6, password);
-//
-//        db.createAccount(contentValues);
-//    }
+    public void saveUser() {
+
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(USER_FILE, MODE_PRIVATE);
+            fos.write(rUsername.getText().toString().getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
