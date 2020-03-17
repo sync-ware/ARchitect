@@ -34,4 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="@string/register" />
+
+    <Button
+        android:id="@+id/button_clear_db"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Clear Databse" />
 </android.widget.LinearLayout>

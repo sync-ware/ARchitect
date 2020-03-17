@@ -8,10 +8,10 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import cn.easyar.CameraDevice;
@@ -52,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
             "1TSPuUzWrHUYSeUl2SaF9+hkdPark8eEGrhC0xCTuoMSI1Qcm5nsBGuWvNc=";
 
     private GLView glView;
+
+    private DatabaseHelper mDBHelper;
+    private SQLiteDatabase mDb;
+    private SQLiteDatabase testDB;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -95,6 +100,23 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure() {
             }
         });
+
+        //Initialise Database
+        mDBHelper = new DatabaseHelper(this);
+
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+            testDB = mDBHelper.getWritableDatabase();
+
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
 
         //Settings Button Press
         ImageButton settingsButton = findViewById(R.id.settings_button);
