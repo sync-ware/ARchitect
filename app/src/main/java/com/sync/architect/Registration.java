@@ -67,12 +67,16 @@ public class Registration extends AppCompatActivity {
 
                 if (passwordValue.equals(confirmPasswordValue)) {
                     ContentValues values = new ContentValues();
+                    ContentValues contactValues = new ContentValues();
                     values.put("username", usernameValue);
                     values.put("first_name", firstNameValue);
                     values.put("last_name", lastNameValue);
                     values.put("email", emailValue);
                     values.put("password", passwordValue);
+                    contactValues.put("username", usernameValue);
+                    contactValues.put("friends", "");
                     mDb.insert("Accounts","",values);
+                    mDb.insert("contacts","", contactValues);
                     Toast.makeText(getApplicationContext(), "Registered Successfully :)", Toast.LENGTH_LONG).show();
                     mDb.close();
                     saveUser();

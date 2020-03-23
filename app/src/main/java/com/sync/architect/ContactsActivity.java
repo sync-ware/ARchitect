@@ -35,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
     private static final String Contacts_File = "contacts.json";
     DatabaseHelper cDBHelper;
     SQLiteDatabase cDB;
-    private String currentUser = "mr864";
+    private String currentUser = "pm3001"; //TODO read username from file
 
 
     @Override
@@ -256,7 +256,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private Boolean checkUserExists(String user){
-        Cursor userContacts = cDB.rawQuery("SELECT username from contacts where username = '" + user + "'" ,null);
+        Cursor userContacts = cDB.rawQuery("SELECT username from Accounts where username = '" + user + "'" ,null);
         userContacts.moveToPosition(0);
         if (userContacts.getCount() == 0){
             userContacts.close();
