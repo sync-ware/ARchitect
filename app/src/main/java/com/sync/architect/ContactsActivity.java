@@ -32,10 +32,10 @@ public class ContactsActivity extends AppCompatActivity {
     private ArrayList<String> filteredList = new ArrayList<>();
     private ArrayAdapter adapter;
     private ListView list;
-    private static final String Contacts_File = "contacts.json";
+    private static final String USER_FILE = "user.txt";
     DatabaseHelper cDBHelper;
     SQLiteDatabase cDB;
-    private String currentUser = "pm3001"; //TODO read username from file
+    private String currentUser = "pm3001";
 
 
     @Override
