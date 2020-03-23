@@ -222,11 +222,11 @@ public class ContactsActivity extends AppCompatActivity {
         cDB.execSQL("create table if not exists contacts(" +
            "username text primary key," +
            "friends text)");
-        Cursor contactExists = cDB.rawQuery("SELECT * FROM contacts where username = 'mr864'", null);
+        Cursor contactExists = cDB.rawQuery("SELECT * FROM contacts where username = '" + currentUser + "'", null);
         if (contactExists.getCount() == 0) {
             Log.d("SQL database","Inserting test values");
             ContentValues values = new ContentValues();
-            values.put("username","mr864");
+            values.put("username",currentUser);
             values.put("friends","Dan,James,Alex,Ryan,Ben");
             //values.put("username","jp221");
             //values.put("friends","Jasmine,Sophie,Kate,Abi,Issy,Gaby");

@@ -73,10 +73,10 @@ public class Registration extends AppCompatActivity {
                     values.put("last_name", lastNameValue);
                     values.put("email", emailValue);
                     values.put("password", passwordValue);
-                    contactValues.put("username", usernameValue);
-                    contactValues.put("friends", "");
+//                    contactValues.put("username", usernameValue);
+//                    contactValues.put("friends", "");
                     mDb.insert("Accounts","",values);
-                    mDb.insert("contacts","", contactValues);
+                    //mDb.insert("contacts","", contactValues);
                     Toast.makeText(getApplicationContext(), "Registered Successfully :)", Toast.LENGTH_LONG).show();
                     mDb.close();
                     saveUser();
