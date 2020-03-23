@@ -1,6 +1,10 @@
 package com.sync.architect;
 
+import android.content.ContentValues;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.content.DialogInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,16 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.json.JSONException;
-import org.json.simple.*;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class ContactsActivity extends AppCompatActivity {
 
@@ -35,6 +32,10 @@ public class ContactsActivity extends AppCompatActivity {
     private ArrayList<String> filteredList = new ArrayList<>();
     private ArrayAdapter adapter;
     private ListView list;
+    private static final String Contacts_File = "contacts.json";
+    DatabaseHelper cDBHelper;
+    SQLiteDatabase cDB;
+    private String currentUser = "mr864";
 
 
     @Override
@@ -44,8 +45,28 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
         Log.d("ContactsActivity", "onCreate: Started.");
         EditText theFilter = (EditText) findViewById(R.id.searchFilter);
+
+        cDBHelper = new DatabaseHelper(this);
+
+        try {
+            cDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+
+        try {
+            cDB = cDBHelper.getWritableDatabase();
+
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
+        createTestContactsTable();
+
         list = findViewById(R.id.listView);
-        names.addAll(readUserContacts("mr864@bath.ac.uk"));
+        checkNamesEmpty();
+        names.addAll(readUserContacts());
+        checkNamesEmpty();
 
         //default list of names for testing
 
@@ -61,6 +82,11 @@ public class ContactsActivity extends AppCompatActivity {
                 builder.setNegativeButton("Remove", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
                         names.remove(i);
+                        String newString = stringToSql(names);
+                        ContentValues values = new ContentValues();
+                        values.put("friends",newString);
+                        cDB.update("contacts",values,"username = '" + currentUser + "'",null);
+                        checkNamesEmpty();
                         adapter = new ArrayAdapter(ContactsActivity.this, android.R.layout.simple_list_item_1 , names);
                         list.setAdapter(adapter);
                         dialog.cancel();
@@ -84,21 +110,27 @@ public class ContactsActivity extends AppCompatActivity {
         });
 
 
-        //Button to add a new contact (for now by name but add verficiation and emails in the future
+        //Button to add a new contact (for now by name but add verification and emails in the future
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ContactsActivity.this);
-                builder.setTitle("Enter user email address");
+                builder.setTitle("Enter username");
                 final EditText input = new EditText(ContactsActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
                 builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
-                        names.add(input.getText().toString());
-                        adapter = new ArrayAdapter(ContactsActivity.this, android.R.layout.simple_list_item_1 , names);
-                        list.setAdapter(adapter);
+                        if (checkUserExists(input.getText().toString())){
+                            String newUserName = input.getText().toString();
+                            String newFirstName = usernameToName(newUserName);
+                            names.add(newFirstName);
+                            checkNamesEmpty();
+                            addUserContact(newFirstName);
+                            adapter = new ArrayAdapter(ContactsActivity.this, android.R.layout.simple_list_item_1 , names);
+                            list.setAdapter(adapter);
+                        }
                         dialog.cancel();
                     }});
                 builder.show();
@@ -127,31 +159,53 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<String> readUserContacts(String email) {
-        try {
-            ArrayList<String> contacts = new ArrayList<String>();
-            JSONParser jsonParser = new JSONParser();
-            InputStreamReader reader = new InputStreamReader(getResources().openRawResource(R.raw.contactdata));
-            JSONArray allContacts = (JSONArray) jsonParser.parse(reader);
-
-            for (int i = 0; i < allContacts.size(); i++) {
-                JSONObject currentOBJ = (JSONObject) allContacts.get(i);
-                if (currentOBJ.get("email").equals(email)) {
-                    Collection<String> userContacts = (Collection<String>) currentOBJ.get("contacts");
-                    contacts.addAll(userContacts);
-                    return contacts;
-                }
-            }
-
-            Log.d("JSON contact List", "email does not exists");
-            contacts.add("Mistake");
-            return contacts;
-        } catch (ParseException | IOException ex) {
-            Log.d("Reading JSON error", "JSON is having issues");
-            return null;
+    private void checkNamesEmpty() {
+        String testString = "Your contact list is empty. Try adding a user with the button below";
+        if (names.contains(testString)){
+            names.remove(testString);
         }
+        if (names.size() == 0 || names == null) {
+            names.add("Your contact list is empty. Try adding a user with the button below");
+
+        }
+
     }
 
+    //Takes the username of the user and returns an array list of their added contacts
+    private ArrayList<String> readUserContacts() {
+        Cursor userContacts = cDB.rawQuery("SELECT friends from contacts where username = '" + currentUser + "'" ,null);
+        userContacts.moveToPosition(0);
+        String friendList = userContacts.getString(userContacts.getColumnIndex("friends"));
+        String[] friendList2 = sqlToString(friendList);
+        ArrayList<String> contactList = new ArrayList<String>();
+
+        for (int i = 0; i < friendList2.length; i++){
+            contactList.add(friendList2[i]);
+        }
+        userContacts.close();
+        if (contactList.contains("")){
+            contactList.remove("");
+        }
+        if (contactList.isEmpty()){
+            contactList.add("Your contact list is empty. Try adding a user with the button below");
+        }
+        return contactList;
+    }
+
+    //adds a new contacts to the relevant user in the database
+    private void addUserContact(String newContact){
+        Cursor userContacts = cDB.rawQuery("SELECT friends from contacts where username = '" + currentUser + "'" ,null);
+        userContacts.moveToPosition(0);
+        String friendList = userContacts.getString(userContacts.getColumnIndex("friends"));
+        String toConcat = ","+newContact;
+        friendList = friendList.concat(toConcat);
+        ContentValues values = new ContentValues();
+        values.put("friends",friendList);
+        cDB.update("contacts",values,"username = '" + currentUser + "'",null);
+        userContacts.close();
+    }
+
+    //Filters the listview by a given character sequence
     private ArrayList<String> filterList(ArrayList<String> aList, CharSequence charSequence){
         filteredList.clear();
         for (int count = 0; count < aList.size(); count++){
@@ -160,6 +214,64 @@ public class ContactsActivity extends AppCompatActivity {
             }
         }
         return filteredList;
+    }
+
+    //Creates a test table if there currently is not one
+    private void createTestContactsTable(){
+        //cDB.execSQL("drop table contacts");
+        cDB.execSQL("create table if not exists contacts(" +
+           "username text primary key," +
+           "friends text)");
+        Cursor contactExists = cDB.rawQuery("SELECT * FROM contacts where username = 'mr864'", null);
+        if (contactExists.getCount() == 0) {
+            Log.d("SQL database","Inserting test values");
+            ContentValues values = new ContentValues();
+            values.put("username","mr864");
+            values.put("friends","Dan,James,Alex,Ryan,Ben");
+            //values.put("username","jp221");
+            //values.put("friends","Jasmine,Sophie,Kate,Abi,Issy,Gaby");
+            cDB.insert("contacts","",values);
+        }
+        contactExists.close();
+    }
+
+    //converts the comma separated string from the database into a string array
+    private String[] sqlToString(String sqlValue){
+        String[] contactList = sqlValue.split( "," );
+        return contactList;
+    }
+
+    //Converts a string array into a comma separated string to be inserted into the sql database
+    private String stringToSql(ArrayList<String> contactList){
+        if (names.size() ==0){
+            return "";
+        }
+        String sqlString = "";
+        for (int i = 0; i < contactList.size() - 1; i++){
+            sqlString = sqlString.concat(contactList.get(i));
+            sqlString = sqlString.concat(",");
+        }
+        sqlString = sqlString.concat(contactList.get(contactList.size()-1));
+        return sqlString;
+    }
+
+    private Boolean checkUserExists(String user){
+        Cursor userContacts = cDB.rawQuery("SELECT username from contacts where username = '" + user + "'" ,null);
+        userContacts.moveToPosition(0);
+        if (userContacts.getCount() == 0){
+            userContacts.close();
+            return false;
+        }
+        userContacts.close();
+        return true;
+    }
+
+    private String usernameToName(String username){
+        Cursor userContacts = cDB.rawQuery("SELECT first_name from Accounts where username = '" + username + "'" ,null);
+        userContacts.moveToPosition(0);
+        String newFriend = userContacts.getString(userContacts.getColumnIndex("first_name"));
+        userContacts.close();
+        return newFriend;
     }
 
 }
